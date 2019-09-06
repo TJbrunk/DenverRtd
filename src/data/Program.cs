@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using CsvHelper;
 
 namespace RtdData
@@ -10,19 +11,18 @@ namespace RtdData
     {
         static void Main(string[] args)
         {
-            // TextReader reader = new StreamReader("../../google_transit/routes.txt");
-            // var csvReader = new CsvReader(reader);
-            // var routes = csvReader.GetRecords<Route>();
-            // foreach (var r in routes)
-            // {
-            //     if(r.Id == "FF7")
-            //     {
-            //         Console.WriteLine("Found FF7 route");
-            //     }
-            // }
+            Schedule s = new Schedule();
+            s.InitAsync("../../google_transit/stop_times.txt").ConfigureAwait(false);
+
+            List<string> routes = new List<string>(new string[] {"FF7", "FF3"});
+            Trip trip = new Trip();
+            trip.InitAsync("../../google_transit/trips.txt").ConfigureAwait(false);
+            var trips = trip.GetTripsByRoute(routes);
+
             TimeSpan start = new TimeSpan(7, 0, 0);
             TimeSpan end = new TimeSpan(9, 0, 0);
-            Schedule.GetStopTimes(34660, start, end);
+            s.GetStopTimes(trips, start, end);
+
         }
     }
 }

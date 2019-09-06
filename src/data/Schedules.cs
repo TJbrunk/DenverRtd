@@ -1,6 +1,8 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 using CsvHelper;
 using CsvHelper.Configuration;
 using CsvHelper.Configuration.Attributes;
@@ -8,9 +10,8 @@ using CsvHelper.TypeConversion;
 
 namespace RtdData
 {
-    public class Schedule
+    public class Schedule : Base
     {
-      
       [Name("trip_id")]
       public int TripId {get; set;}
 
@@ -23,50 +24,58 @@ namespace RtdData
       [Name("stop_id")]
       public int? StopId { get; set; }
 
-      [Name("stop_sequence")]
-      public int? Sequence { get; set; }
-      
       [Name("stop_headsign")]
       public int? Headsign { get; set; }
-      
-      [Name("pickup_type")]
-      public int? PickupType { get; set; }
-      
-      [Name("drop_off_type")]
-      public int? DropoffType { get; set; }
-      
-      [Name("shape_dist_traveled")]
-      public int? Distance { get; set; }
-      
-      [Name("timepoint")]
-      public int? TimePoint { get; set; }
 
-      public static void GetStopTimes(int stopId, TimeSpan start, TimeSpan end)
+
+      private List<Schedule> _stops = null;
+
+      public override async Task InitAsync(string stopTimesFile)
       {
-        using (var reader = new StreamReader("../../google_transit/stop_times-short.txt"))
-        using (var csv = new CsvReader(reader))
-        {
-          // csv.Configuration.RegisterClassMap<ScheduleMap>();
-          var stops = csv.GetRecords<Schedule>();
-          var validStops = stops.Where(stop => stop.StopId == stopId
-                          && stop.DepartureTime >= start 
-                          && stop.DepartureTime <= end)
-                          .Select(s => s);
-          
-          validStops.ToList()
-            .ForEach(s => Console.WriteLine($"Trip: {s.TripId} Depart: {s.DepartureTime}"));
-        }
+        _initTask = Task.Run(() => {
+          using (var reader = new StreamReader(stopTimesFile))
+          using (var csv = new CsvReader(reader))
+          {
+            this._stops = csv.GetRecords<Schedule>().ToList();
+          }
+        });
+        await _initTask;
+        return;
       }
-    }
 
-    // public class ScheduleMap : ClassMap<Schedule>
-    // {
-    //     public ScheduleMap()
-    //     {
-    //         Map(m => m.TripId).Name("trip_id");
-    //         Map(m => m.DepartureTime).Name("departure_time").TypeConverter<TestConverter>();
-    //     }
-    // }
+      // public void GetStopTimes(int stopId, TimeSpan start, TimeSpan end)
+      // {
+      //   base.WaitForLoading();
+      //   var validStops = _stops.Where(stop => stop.StopId == stopId
+      //                   && stop.DepartureTime >= start 
+      //                   && stop.DepartureTime <= end)
+      //                   .Select(s => s);
+        
+      //   validStops.ToList()
+      //     .ForEach(s => Console.WriteLine($"Trip: {s.TripId} Depart: {s.DepartureTime}"));
+      // }
+
+      ///<summary>
+      /// Already looked of trips for a route, pass in here to get the stop
+      /// times
+      ///</summary>
+      public List<Schedule> GetStopTimes(List<Trip> trips, TimeSpan start, TimeSpan end)
+      {
+        base.WaitForLoading();
+        var validStops =
+          _stops.Where(stop =>
+                      trips.Any(t => t.Id == stop.TripId)
+                      && stop.DepartureTime >= start 
+                      && stop.DepartureTime <= end)
+                .Select(s => s)
+                .ToList();
+        
+        validStops
+          .ForEach(s => Console.WriteLine($"Trip: {s.TripId} Depart: {s.DepartureTime}"));
+
+        return validStops;
+      }
+  }
 
     public class CustomTimeSpanConverter : TimeSpanConverter
     {
