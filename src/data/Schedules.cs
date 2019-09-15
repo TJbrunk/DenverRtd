@@ -12,7 +12,7 @@ namespace RtdData
 {
     public class Schedule : Base
     {
-      [Name("trip_id")]
+      [Name("trip_id")] // Unique ID for a trip (Route)
       public int TripId {get; set;}
 
       [Name("arrival_time"), TypeConverter(typeof(CustomTimeSpanConverter))]
@@ -32,6 +32,7 @@ namespace RtdData
 
       public override async Task InitAsync(string stopTimesFile)
       {
+        await base.InitAsync(stopTimesFile);
         _initTask = Task.Run(() => {
           using (var reader = new StreamReader(stopTimesFile))
           using (var csv = new CsvReader(reader))
@@ -59,21 +60,27 @@ namespace RtdData
       /// Already looked of trips for a route, pass in here to get the stop
       /// times
       ///</summary>
-      public List<Schedule> GetStopTimes(List<Trip> trips, TimeSpan start, TimeSpan end)
+      public List<Schedule> GetStopTimes(List<Trip> trips, TimeSpan start, TimeSpan end, int stopId)
       {
         base.WaitForLoading();
-        var validStops =
+        var stops =
           _stops.Where(stop =>
                       trips.Any(t => t.Id == stop.TripId)
                       && stop.DepartureTime >= start 
-                      && stop.DepartureTime <= end)
-                .Select(s => s)
-                .ToList();
-        
-        validStops
-          .ForEach(s => Console.WriteLine($"Trip: {s.TripId} Depart: {s.DepartureTime}"));
+                      && stop.DepartureTime <= end
+                      && stop.StopId == stopId)
+                .Select(s => s);
 
-        return validStops;
+        var details = 
+          from trip in trips
+          join stop in stops on trip.Id equals stop.TripId
+          select new {
+            trip.Id, trip.RouteId, trip.DirectionId, stop.StopId, trip.ServiceId, stop.DepartureTime
+          };
+        details.OrderBy(s => s.DepartureTime).ToList()
+          .ForEach(s => Console.WriteLine($"{s.Id} {s.RouteId} {s.DepartureTime} {s.StopId}"));
+
+        return null;
       }
   }
 
