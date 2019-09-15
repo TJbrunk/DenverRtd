@@ -10,6 +10,7 @@ namespace RtdData
   public abstract class Base
   {
       internal Task _initTask;
+      internal string fileName;
 
       public bool IsReady()
       {
@@ -20,14 +21,18 @@ namespace RtdData
       {
         if(this._initTask.Status == TaskStatus.Running)
         {
-          Console.WriteLine("Waiting for file to load");
+          Console.WriteLine($"Waiting for {this.fileName} to load");
           this._initTask.Wait();
           return;
         }
         return;
       }
 
-      public abstract Task InitAsync(string file);
+      public virtual Task InitAsync(string file)
+      {
+        this.fileName = Path.GetFileName(file);
+        return Task.CompletedTask;
+      }
 
   }
 }
