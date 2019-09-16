@@ -1,6 +1,6 @@
-using CsvHelper.Configuration.Attributes;
+/*using CsvHelper.Configuration.Attributes;
 
-namespace RtdData
+namespace RtdPlanner
 {
     public class Route
     {
@@ -24,4 +24,4 @@ namespace RtdData
       public string TextColor { get; set; }
 
     }
-}
+}*/

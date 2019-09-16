@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using CsvHelper;
 
-namespace RtdData
+namespace RtdPlanner
 {
   public abstract class Base
   {
+    /*
       internal Task _initTask;
       internal string fileName;
 
@@ -33,6 +33,6 @@ namespace RtdData
         this.fileName = Path.GetFileName(file);
         return Task.CompletedTask;
       }
-
+    */
   }
 }

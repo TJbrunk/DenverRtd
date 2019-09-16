@@ -3,26 +3,35 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using CsvHelper;
+using RtdData;
+using RtdData.Entities;
 
-namespace RtdData
+namespace RtdPlanner
 {
     class Program
     {
         static void Main(string[] args)
         {
             Schedule s = new Schedule();
-            s.InitAsync("../../google_transit/stop_times.txt").ConfigureAwait(false);
 
+            // InitDb();
             List<string> routes = new List<string>(new string[] {"FF7", "FF3"});
             Trip trip = new Trip();
-            trip.InitAsync("../../google_transit/trips.txt").ConfigureAwait(false);
+            
             var trips = trip.GetTripsByRoute(routes);
-
+            
             TimeSpan start = new TimeSpan(7, 0, 0);
             TimeSpan end = new TimeSpan(9, 0, 0);
-            s.GetStopTimes(trips, start, end);
+            s.GetStopTimes(trips, start, end, 34660);
+        }
 
+        private static async Task InitDb()
+        {
+            using(var db = new RtdDbContext())
+            {
+                // await TripEntity.SetData(db, "../google_transit/trips.txt");
+                await StopTimeEntity.SetData(db, "../google_transit/stop_times.txt");
+            }
         }
     }
 }
