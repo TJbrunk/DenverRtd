@@ -21,7 +21,7 @@ namespace RtdData.Entities
     [Name("service_id")]
     public string ServiceId { get; set; }
 
-    // Uniquie ID for the Route/Service
+    // Unique ID for the Route/Service
     [Name("trip_id")]
     public int Id { get; set; }
 

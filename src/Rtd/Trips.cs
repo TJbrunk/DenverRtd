@@ -50,7 +50,7 @@ namespace RtdPlanner
 */
       // Get the Trip information for the provided routes
       // Routes are FF7, 80L, etc
-      public List<TripEntity> GetTripsByRoute(List<string> routeIds, int? direction = null)
+      public static List<TripEntity> GetTripsByRoute(List<string> routeIds, int? direction = null)
       {
 
         using(var db = new RtdDbContext())
