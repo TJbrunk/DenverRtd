@@ -12,10 +12,10 @@ namespace RtdPlanner
     {
         static void Main(string[] args)
         {
+            // InitDb().Wait();
             Schedule s = new Schedule();
 
-            // InitDb();
-            List<string> routes = new List<string>(new string[] {"FF7", "FF3"});
+            List<string> routes = new List<string>(new string[] {"FF1", "FF3"});
             Trip trip = new Trip();
             
             var trips = trip.GetTripsByRoute(routes);
@@ -29,8 +29,8 @@ namespace RtdPlanner
         {
             using(var db = new RtdDbContext())
             {
-                // await TripEntity.SetData(db, "../google_transit/trips.txt");
-                await StopTimeEntity.SetData(db, "../google_transit/stop_times.txt");
+                await TripEntity.SetData(db, @"..\google_transit\trips.txt");
+                await StopTimeEntity.SetData(db, @"..\google_transit\stop_times.txt");
             }
         }
     }

@@ -2,6 +2,7 @@
 using System.IO;
 using Microsoft.EntityFrameworkCore;
 using RtdData.Entities;
+using static System.Environment;
 
 namespace RtdData
 {
@@ -9,8 +10,10 @@ namespace RtdData
     {
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var db = Path.Combine(Environment.CurrentDirectory, "db", "RtdData.db");
-            // string db = @"C:\Projects\Rtd-Planner\source\db\RtdData.db";
+            string appData = Environment.GetFolderPath(SpecialFolder.CommonApplicationData);
+            string folder = Path.Combine(appData, "RtdApp");
+            Directory.CreateDirectory(folder);
+            string db = Path.Combine(folder, "RtdData.db");
             optionsBuilder
                 .UseSqlite($"Data Source={db};");
         }
