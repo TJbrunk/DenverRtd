@@ -44,7 +44,7 @@ namespace RtdData.Entities
   {
     override public Object ConvertFromString(string text, IReaderRow row, MemberMapData memberMapData)
     {
-        var t = text.Split(":", 3, StringSplitOptions.None);
+        var t = text.Split(new char[1]{':'}, 3, StringSplitOptions.None);
         int hours = int.Parse(t[0]);
         int mins = int.Parse(t[1]);
         return new TimeSpan(hours, mins, 0);
