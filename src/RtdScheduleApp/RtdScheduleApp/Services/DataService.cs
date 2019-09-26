@@ -38,14 +38,20 @@ namespace Rtd.UI.Services
                       trip.ServiceId,
                       stop.DepartureTime
                   };
-                details.OrderBy(s => s.DepartureTime).ToList()
-                  .ForEach(s => Console.WriteLine($"{s.Id} {s.RouteId} {s.DepartureTime} {s.StopId}"));
+                //details.OrderBy(s => s.DepartureTime).ToList()
+                //  .ForEach(s => Console.WriteLine($"{s.Id} {s.RouteId} {s.DepartureTime} {s.StopId}"));
+                //return stops;
             }
         }
 
-        public List<TripEntity> GetTripsByRoute(List<string> routeIds, int? direction = null)
+        /// <summary>
+        /// Get Trips for the provided route(s) (FF1, 80L, etc)
+        /// </summary>
+        /// <param name="routeIds"></param>
+        /// <param name="direction"></param>
+        /// <returns></returns>
+        public IQueryable<TripEntity> GetTripsByRoute(List<string> routeIds, int? direction = null)
         {
-
             using (var db = new RtdDbContext())
             {
                 var matchingTrips =
@@ -59,12 +65,13 @@ namespace Rtd.UI.Services
                     matchingTrips = matchingTrips.Where(t => t.DirectionId == direction);
                 }
 
-                matchingTrips
-                  .ToList()
-                  .ForEach(t =>
-                    Console.WriteLine($"TripId: {t.Id} ServiceId: {t.ServiceId} Route: {t.RouteId} Dir: {t.DirectionId}")
-                  );
-                return matchingTrips.ToList();
+                //matchingTrips
+                //  .ToList()
+                //  .ForEach(t =>
+                //    Console.WriteLine($"TripId: {t.Id} ServiceId: {t.ServiceId} Route: {t.RouteId} Dir: {t.DirectionId}")
+                //  );
+
+                return matchingTrips;
             }
         }
     }

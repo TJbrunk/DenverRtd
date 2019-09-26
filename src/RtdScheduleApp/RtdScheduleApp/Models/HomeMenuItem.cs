@@ -6,7 +6,8 @@ namespace RtdScheduleApp.Models
 {
     public enum MenuItemType
     {
-        Browse,
+        Reminders,
+        Schedules,
         About
     }
     public class HomeMenuItem

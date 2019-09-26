@@ -18,7 +18,8 @@ namespace RtdScheduleApp.Views
 
             menuItems = new List<HomeMenuItem>
             {
-                new HomeMenuItem {Id = MenuItemType.Browse, Title="Browse" },
+                new HomeMenuItem {Id = MenuItemType.Reminders, Title="Reminders" },
+                new HomeMenuItem {Id = MenuItemType.Schedules, Title="Schedules" },
                 new HomeMenuItem {Id = MenuItemType.About, Title="About" }
             };
 

@@ -11,9 +11,9 @@ namespace RtdScheduleApp.Views
     [XamlCompilation(XamlCompilationOptions.Compile)]
     public partial class ItemDetailPage : ContentPage
     {
-        ItemDetailViewModel viewModel;
+        ReminderDetailViewModel viewModel;
 
-        public ItemDetailPage(ItemDetailViewModel viewModel)
+        public ItemDetailPage(ReminderDetailViewModel viewModel)
         {
             InitializeComponent();
 
@@ -30,7 +30,7 @@ namespace RtdScheduleApp.Views
                 Description = "This is an item description."
             };
 
-            viewModel = new ItemDetailViewModel(item);
+            viewModel = new ReminderDetailViewModel(item);
             BindingContext = viewModel;
         }
     }

@@ -13,9 +13,6 @@ namespace RtdScheduleApp
         public App()
         {
             InitializeComponent();
-            DependencyService.Register<DataService>();
-            var db = DependencyService.Get<DataService>();
-            
 
             MainPage = new MainPage();
         }

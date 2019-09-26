@@ -14,15 +14,15 @@ using RtdScheduleApp.ViewModels;
 namespace RtdScheduleApp.Views
 {
     [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class ItemsPage : ContentPage
+    public partial class RemindersPage : ContentPage
     {
-        ItemsViewModel viewModel;
+        RemindersViewModel viewModel;
 
-        public ItemsPage()
+        public RemindersPage()
         {
             InitializeComponent();
 
-            BindingContext = viewModel = new ItemsViewModel();
+            BindingContext = viewModel = new RemindersViewModel();
         }
 
         async void OnItemSelected(object sender, SelectedItemChangedEventArgs args)
@@ -31,7 +31,7 @@ namespace RtdScheduleApp.Views
             if (item == null)
                 return;
 
-            await Navigation.PushAsync(new ItemDetailPage(new ItemDetailViewModel(item)));
+            await Navigation.PushAsync(new ItemDetailPage(new ReminderDetailViewModel(item)));
 
             // Manually deselect item.
             ItemsListView.SelectedItem = null;

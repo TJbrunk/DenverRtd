@@ -4,10 +4,10 @@ using RtdScheduleApp.Models;
 
 namespace RtdScheduleApp.ViewModels
 {
-    public class ItemDetailViewModel : BaseViewModel
+    public class ReminderDetailViewModel : BaseViewModel
     {
         public Item Item { get; set; }
-        public ItemDetailViewModel(Item item = null)
+        public ReminderDetailViewModel(Item item = null)
         {
             Title = item?.Text;
             Item = item;

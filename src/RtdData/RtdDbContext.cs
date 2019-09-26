@@ -28,6 +28,8 @@ namespace RtdData
                 }
             }
         }
+
+
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder

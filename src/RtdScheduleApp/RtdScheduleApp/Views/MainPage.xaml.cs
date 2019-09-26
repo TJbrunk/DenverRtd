@@ -18,23 +18,24 @@ namespace RtdScheduleApp.Views
 
             MasterBehavior = MasterBehavior.Popover;
 
-            MenuPages.Add((int)MenuItemType.Browse, (NavigationPage)Detail);
+            //MenuPages.Add((int)MenuItemType.Reminders, (NavigationPage)Detail);
+            //MenuPages.Add((int)MenuItemType.Schedules, (NavigationPage)Detail);
         }
 
         public async Task NavigateFromMenu(int id)
         {
-            var db = DependencyService.Get<DataService>();
-            var routes = new List<string>(new string[] { "FF7", "FF1" });
-            db.GetTripsByRoute(routes);
             if (!MenuPages.ContainsKey(id))
             {
                 switch (id)
                 {
-                    case (int)MenuItemType.Browse:
-                        MenuPages.Add(id, new NavigationPage(new ItemsPage()));
+                    case (int)MenuItemType.Reminders:
+                        MenuPages.Add(id, new NavigationPage(new RemindersPage()));
                         break;
                     case (int)MenuItemType.About:
                         MenuPages.Add(id, new NavigationPage(new AboutPage()));
+                        break;
+                    case (int)MenuItemType.Schedules:
+                        MenuPages.Add(id, new NavigationPage(new SchedulesPage()));
                         break;
                 }
             }
