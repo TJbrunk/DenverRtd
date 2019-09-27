@@ -18,7 +18,14 @@ namespace RtdScheduleApp.Views
 		{
 			InitializeComponent();
             BindingContext = viewModel = new SchedulesViewModel();
+            //viewModel.GetStopDetails();
 
         }
-	}
+
+        protected override void OnAppearing()
+        {
+            base.OnAppearing();
+
+        }
+    }
 }

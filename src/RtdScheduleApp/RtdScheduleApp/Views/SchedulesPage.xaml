@@ -7,11 +7,38 @@
     <ContentPage.BindingContext>
         <vm:SchedulesViewModel />
     </ContentPage.BindingContext>
-    <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Schedules Page"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
-        </StackLayout>
-    </ContentPage.Content>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <!--Route Selection-->
+        <ListView x:Name="routes"
+                  Grid.Row="0"
+                  ItemsSource="{Binding Routes}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <SwitchCell Text="{Binding Name}"
+                                On="{Binding IsSelected}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+        
+        <!--Time display-->
+        <ListView x:Name="stopDetails"
+                  Grid.Row="1"
+                  ItemsSource="{Binding StopDetails}">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <StackLayout Orientation="Horizontal">
+                            <Label Text="{Binding RouteId}"/>
+                            <Label Text="{Binding StopId}"/>
+                            <Label Text="{Binding ArrivalTime}"/>
+                        </StackLayout>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
 </ContentPage>

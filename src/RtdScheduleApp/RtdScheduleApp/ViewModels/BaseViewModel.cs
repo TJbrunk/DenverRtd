@@ -6,12 +6,12 @@ using System.Runtime.CompilerServices;
 using Xamarin.Forms;
 
 using RtdScheduleApp.Models;
+using RtdData;
 
 namespace RtdScheduleApp.ViewModels
 {
     public class BaseViewModel : INotifyPropertyChanged
     {
-        //public IDataStore<Item> DataStore => DependencyService.Get<IDataStore<Item>>() ?? new MockDataStore();
 
         bool isBusy = false;
         public bool IsBusy

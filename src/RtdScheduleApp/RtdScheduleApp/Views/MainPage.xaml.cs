@@ -24,6 +24,8 @@ namespace RtdScheduleApp.Views
 
         public async Task NavigateFromMenu(int id)
         {
+            // Check if the menu page has been opened before.
+            // If NOT, Initialize it and add it to the page list.
             if (!MenuPages.ContainsKey(id))
             {
                 switch (id)

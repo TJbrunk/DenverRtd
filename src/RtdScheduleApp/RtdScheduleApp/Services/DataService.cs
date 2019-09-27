@@ -8,13 +8,22 @@ using System.Text;
 
 namespace Rtd.UI.Services
 {
+    public class TripStopDetails
+    {
+        public int TripId { get; set; }
+        public string RouteId { get; set; }
+        public int StopId { get; set; }
+        public TimeSpan ArrivalTime { get; set; }
+        public TimeSpan DepartureTime { get; set; }
+
+    }
     public class DataService
     {
         ///<summary>
         /// Already looked of trips for a route, pass in here to get the stop
         /// times
         ///</summary>
-        public void GetStopTimes(List<TripEntity> trips, TimeSpan start, TimeSpan end, int stopId)
+        public List<TripStopDetails> GetStopTimes(List<TripEntity> trips, TimeSpan start, TimeSpan end, int stopId)
         {
             using (var db = new RtdDbContext())
             {
@@ -29,18 +38,17 @@ namespace Rtd.UI.Services
                 var details =
                   from trip in trips
                   join stop in stops on trip.Id equals stop.TripId
-                  select new
+                  select new TripStopDetails
                   {
-                      trip.Id,
-                      trip.RouteId,
-                      trip.DirectionId,
-                      stop.StopId,
-                      trip.ServiceId,
-                      stop.DepartureTime
+                      TripId = trip.Id,
+                      RouteId = trip.RouteId,
+                      StopId = (int)stop.StopId,
+                      ArrivalTime = stop.ArrivalTime,
+                      DepartureTime = stop.DepartureTime
                   };
                 //details.OrderBy(s => s.DepartureTime).ToList()
                 //  .ForEach(s => Console.WriteLine($"{s.Id} {s.RouteId} {s.DepartureTime} {s.StopId}"));
-                //return stops;
+                return details.OrderBy(s => s.ArrivalTime).ToList();
             }
         }
 
@@ -50,7 +58,7 @@ namespace Rtd.UI.Services
         /// <param name="routeIds"></param>
         /// <param name="direction"></param>
         /// <returns></returns>
-        public IQueryable<TripEntity> GetTripsByRoute(List<string> routeIds, int? direction = null)
+        public List<TripEntity> GetTripsByRoute(List<string> routeIds, int? direction = null)
         {
             using (var db = new RtdDbContext())
             {
@@ -71,7 +79,7 @@ namespace Rtd.UI.Services
                 //    Console.WriteLine($"TripId: {t.Id} ServiceId: {t.ServiceId} Route: {t.RouteId} Dir: {t.DirectionId}")
                 //  );
 
-                return matchingTrips;
+                return matchingTrips.ToList();
             }
         }
     }

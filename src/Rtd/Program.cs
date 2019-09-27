@@ -12,17 +12,17 @@ namespace RtdPlanner
     {
         static void Main(string[] args)
         {
-            // InitDb().Wait();
-            // GetDetailsForRoutes();
-            Schedule.GetNextTrips(34660, 50);//, new List<string>(new string[]{"FF6", "FF1"}));
+            InitDb().Wait();
+            GetDetailsForRoutes();
+            // Schedule.GetNextTrips(34660, 50);//, new List<string>(new string[]{"FF6", "FF1"}));
         }
 
         private static async Task InitDb()
         {
             using(var db = new RtdDbContext())
             {
-                await TripEntity.SetData(db, @"..\google_transit\trips.txt");
-                await StopTimeEntity.SetData(db, @"..\google_transit\stop_times.txt");
+                await TripEntity.SetData(db, @"..\..\google_transit\trips.txt");
+                await StopTimeEntity.SetData(db, @"..\..\google_transit\stop_times.txt");
             }
         }
 
@@ -32,8 +32,8 @@ namespace RtdPlanner
             
             var trips = Trip.GetTripsByRoute(routes);
             
-            TimeSpan start = new TimeSpan(7, 0, 0);
-            TimeSpan end = new TimeSpan(9, 0, 0);
+            TimeSpan start = new TimeSpan(15, 0, 0);
+            TimeSpan end = new TimeSpan(19, 0, 0);
             Schedule.GetStopTimes(trips, start, end, 34660);
         }
     }
